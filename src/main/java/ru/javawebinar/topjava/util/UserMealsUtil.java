@@ -34,40 +34,13 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExceed>  getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO return filtered list with correctly exceeded field
-        List<UserMealWithExceed> list = new ArrayList<>();
-        Map<LocalDate, Boolean> map = getDateExceed(mealList, caloriesPerDay);
-        map.forEach((k,v)->{
-            //System.out.println("Item : " + k + " Count : " + v);
-            mealList.forEach(meal->{
-                if (k.isEqual(meal.getDateTime().toLocalDate()) && TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime)){
-                    list.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), v));
-                }
-            });
-        });
+        return mealList.stream()
+                .filter(um -> TimeUtil.isBetween(um.getDateTime().toLocalTime(), startTime, endTime))
+                .map(um -> new UserMealWithExceed(um.getDateTime(), um.getDescription(), um.getCalories(), mealList.stream()
+                        .collect(Collectors.groupingBy(UserMeal::getLocalDate, Collectors.summingInt(UserMeal::getCalories))).get(um.getLocalDate()) > caloriesPerDay))
 
-        return list;
+                .collect(Collectors.toList());
     }
 
-    private static Map<LocalDate, Boolean> getDateExceed(List<UserMeal> mealList, int caloriesPerDay){
-        Map<LocalDate, Boolean> map = new HashMap<>();
-        int sum = 0;
-        boolean exceed;
-        for (int i = 0; i < mealList.size() - 1; i++){
-            sum += mealList.get(i).getCalories();
-            if (!mealList.get(i).getDateTime().toLocalDate().isEqual(mealList.get(i + 1).getDateTime().toLocalDate())){
-                exceed = sum > caloriesPerDay;
-                map.put(mealList.get(i).getDateTime().toLocalDate(), exceed);
-                sum = 0;
-            }else if ((i + 1 == mealList.size() - 1) && mealList.get(i).getDateTime().toLocalDate().isEqual(mealList.get(i + 1).getDateTime().toLocalDate())){
-                sum += mealList.get(i + 1).getCalories();
-                exceed = sum > caloriesPerDay;
-                map.put(mealList.get(i).getDateTime().toLocalDate(), exceed);
-            }else if ((i + 1 == mealList.size() - 1) && !mealList.get(i - 1).getDateTime().toLocalDate().isEqual(mealList.get(i).getDateTime().toLocalDate())){
-                sum += mealList.get(i + 1).getCalories();
-                exceed = sum > caloriesPerDay;
-                map.put(mealList.get(i + 1).getDateTime().toLocalDate(), exceed);
-            }
-        }
-        return map;
-    }
+
 }
