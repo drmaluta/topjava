@@ -36,6 +36,7 @@ public class UserMealsUtil {
         // TODO return filtered list with correctly exceeded field
         List<UserMealWithExceed> list = new ArrayList<>();
         Map<LocalDate, Boolean> map = getDateExceed(mealList, caloriesPerDay);
+        /*
         map.forEach((k,v)->{
             //System.out.println("Item : " + k + " Count : " + v);
             mealList.forEach(meal->{
@@ -43,7 +44,13 @@ public class UserMealsUtil {
                     list.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), v));
                 }
             });
-        });
+        });*/
+
+        for (UserMeal meal : mealList) {
+            if (TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime)){
+                list.add(new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), map.get(meal.getDateTime().toLocalDate())));
+            }
+        }
 
         return list;
     }
