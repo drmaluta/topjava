@@ -9,21 +9,21 @@ import java.util.stream.Collectors;
 /**
  * GKislin
  * 06.01.2015.
- *
+ * <p>
  * This class wrap every entity by Wrapper before assertEquals in order to compare them by comparator
  * Default comparator compare by String.valueOf(entity)
  *
  * @param <T> : Entity
  */
 public class ModelMatcher<T> {
+    private static final Comparator DEFAULT_COMPARATOR =
+            (Object expected, Object actual) -> expected == actual || String.valueOf(expected).equals(String.valueOf(actual));
+
+    private Comparator<T> comparator;
+
     public interface Comparator<T> {
         boolean compare(T expected, T actual);
     }
-
-    private static final Comparator DEFAULT_COMPARATOR =
-            (Object expected, Object actual) -> String.valueOf(expected).equals(String.valueOf(actual));
-
-    private Comparator<T> comparator;
 
     public ModelMatcher() {
         this((Comparator<T>) DEFAULT_COMPARATOR);
