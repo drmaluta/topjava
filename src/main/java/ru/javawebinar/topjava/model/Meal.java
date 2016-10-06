@@ -1,5 +1,7 @@
 package ru.javawebinar.topjava.model;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import java.time.LocalDate;
@@ -31,6 +33,7 @@ public class Meal extends BaseEntity {
     private LocalDateTime dateTime;
 
     @Column(name = "description", nullable = false)
+    @NotEmpty
     private String description;
 
     @Column(name = "calories", nullable = false)
