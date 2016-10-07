@@ -52,7 +52,7 @@ public class JpaMealRepositoryImpl implements MealRepository {
     @Override
     public Meal get(int id, int userId) {
         try {
-            return (Meal) em.createNamedQuery(Meal.GET)
+            return em.createNamedQuery(Meal.GET, Meal.class)
                     .setParameter("id", id)
                     .setParameter("userId", userId)
                     .getSingleResult();
