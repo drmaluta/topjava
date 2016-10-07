@@ -10,7 +10,7 @@ public class Profiles {
             HSQLDB = "hsqldb",
             JDBC = "jdbc",
             JPA = "jpa",
-            JPADATA = "jpadata";
+            DATAJPA = "datajpa";
 
     public static final String ACTIVE_DB = HSQLDB;
 }
