@@ -19,6 +19,11 @@ public interface MealRepository {
     // null if meal do not belong to userId
     Meal get(int id, int userId);
 
+    // null if meal do not belong to userId
+    default Meal getWithUser(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
+
     // ORDERED dateTime
     Collection<Meal> getAll(int userId);
 

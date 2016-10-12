@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.javawebinar.topjava.model.Meal;
@@ -32,6 +33,12 @@ public class MealServiceImpl implements MealService {
     }
 
     @Override
+    public Meal getWithUser(int id, int userId) {
+        return ExceptionUtil.checkNotFoundWithId(repository.getWithUser(id, userId), id);
+    }
+
+    @CacheEvict(value = "meals", allEntries = true)
+    @Override
     public void delete(int id, int userId) {
         ExceptionUtil.checkNotFoundWithId(repository.delete(id, userId), id);
     }
@@ -48,15 +55,24 @@ public class MealServiceImpl implements MealService {
         return repository.getAll(userId);
     }
 
+    @CacheEvict(value = "meals", allEntries = true)
     @Override
     public Meal update(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
         return ExceptionUtil.checkNotFoundWithId(repository.save(meal, userId), meal.getId());
     }
 
+    @CacheEvict(value = "meals", allEntries = true)
     @Override
     public Meal save(Meal meal, int userId) {
         Assert.notNull(meal, "meal must not be null");
         return repository.save(meal, userId);
     }
+
+    @CacheEvict(value = "meals", allEntries = true)
+    @Override
+    public void evictCache() {
+    }
+
+
 }

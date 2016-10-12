@@ -16,31 +16,33 @@
         <jdbc:script encoding="utf-8" location="classpath:db/populateDB.sql"/>
     </jdbc:initialize-database>
 
+
     <beans profile="hsqldb">
         <context:property-placeholder location="classpath:db/hsqldb.properties" system-properties-mode="OVERRIDE"/>
 
         <!--no pooling-->
-        <bean id="dataSource"
-              class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
               p:driverClassName="org.hsqldb.jdbcDriver"
               p:url="${database.url}"
               p:username="${database.username}"
-              p:password="${database.password}"/>
+              p:password="${database.password}"
+        />
     </beans>
 
     <beans profile="postgres">
         <context:property-placeholder location="classpath:db/postgres.properties" system-properties-mode="OVERRIDE"/>
 
-        <bean id="dataSource"
-              class="org.apache.tomcat.jdbc.pool.DataSource"
+        <bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource"
               p:driverClassName="org.postgresql.Driver"
               p:url="${database.url}"
               p:username="${database.username}"
-              p:password="${database.password}"/>
+              p:password="${database.password}"
+        />
     </beans>
 
     <beans profile="jdbc">
         <context:component-scan base-package="ru.javawebinar.**.repository.jdbc"/>
+
         <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
             <constructor-arg ref="dataSource"/>
         </bean>
@@ -49,25 +51,26 @@
             <constructor-arg ref="dataSource"/>
         </bean>
     </beans>
+
     <beans profile="jpa">
         <context:component-scan base-package="ru.javawebinar.**.repository.jpa"/>
     </beans>
+
     <beans profile="datajpa">
         <context:component-scan base-package="ru.javawebinar.**.repository.datajpa"/>
         <jpa:repositories base-package="ru.javawebinar.**.repository.datajpa"/>
     </beans>
-    <beans profile="datajpa,jpa">
+
+    <beans profile="jpa, datajpa">
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource"
               p:packagesToScan="ru.javawebinar.**.model">
-            <!--p:persistenceUnitName="persistenceUnit">-->
 
-            <property name="jpaPropertyMap">
-                <map>
-                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).FORMAT_SQL}" value="${hibernate.format_sql}"/>
-                    <entry key="#{T(org.hibernate.cfg.AvailableSettings).USE_SQL_COMMENTS}" value="${hibernate.use_sql_comments}"/>
-                    <!--<entry key="#{T(org.hibernate.cfg.AvailableSettings).HBM2DDL_AUTO}" value="${hibernate.hbm2ddl.auto}"/>-->
-                </map>
+            <property name="jpaProperties">
+                <props>
+                    <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                    <prop key="hibernate.use_sql_comments">${hibernate.use_sql_comments}</prop>
+                </props>
             </property>
 
             <property name="jpaVendorAdapter">

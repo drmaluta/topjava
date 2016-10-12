@@ -2,6 +2,7 @@ package ru.javawebinar.topjava;
 
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
@@ -19,10 +20,18 @@ import java.util.List;
 public class SpringMain {
     public static void main(String[] args) {
         // java 7 Automatic resource management
-        try (ConfigurableApplicationContext appCtx = new ClassPathXmlApplicationContext("spring/spring-app.xml","spring/mock.xml")) {
-            System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
+        try (GenericXmlApplicationContext appCtx = new GenericXmlApplicationContext()) {
+
+            appCtx.getEnvironment().setActiveProfiles(Profiles.ACTIVE_DB, Profiles.DATAJPA);
+            appCtx.load("spring/spring-app.xml", "spring/spring-db.xml");
+            appCtx.refresh();
+
+            System.out.println("Bean definition names:");
+            Arrays.stream(appCtx.getBeanDefinitionNames()).forEach(System.out::println);
+            System.out.println();
+
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
-            adminUserController.create(UserTestData.USER);
+            adminUserController.get(UserTestData.USER_ID);
             System.out.println();
 
             MealRestController mealController = appCtx.getBean(MealRestController.class);

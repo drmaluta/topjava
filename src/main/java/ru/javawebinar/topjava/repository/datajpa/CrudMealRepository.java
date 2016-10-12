@@ -24,6 +24,12 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
     @Query("SELECT m FROM Meal m WHERE m.id=:id AND m.user.id=:userId")
     Meal findOne(@Param("id") int id, @Param("userId") int userId);
 
+    @Query("SELECT m, u FROM Meal m JOIN FETCH User u ON u.id = m.user.id AND m.user.id = :userId WHERE m.id = :id")
+    Meal getWithUser(
+            @Param("id") int mealId,
+            @Param("userId") int userId
+    );
+
     @Override
     @Transactional
     Meal save(Meal meal);
