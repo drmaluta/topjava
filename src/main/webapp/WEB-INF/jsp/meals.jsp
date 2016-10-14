@@ -9,8 +9,8 @@
 </head>
 <body>
 <section>
-    <h2><a href="index.html">Home</a></h2>
-    <h3>Meal list</h3>
+    <h2><a href="${pageContext.request.contextPath}/"><fmt:message key="app.home"/></a></h2>
+    <h3><fmt:message key="meals.title"/></h3>
     <form method="post" action="meals?action=filter">
         <dl>
             <dt>From Date:</dt>
