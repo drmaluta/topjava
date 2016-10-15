@@ -9,10 +9,10 @@
 <body>
 <section>
     <h2><a href="index.html">Home</a></h2>
-    <h3>${param.action == 'create' ? 'Create meal' : 'Edit meal'}</h3>
+    <h3>${edit == 'false' ? 'Create meal' : 'Edit meal'}</h3>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="meals">
+    <form method="post" >
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt>DateTime:</dt>
