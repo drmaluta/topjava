@@ -100,8 +100,7 @@
                 </configuration>
             </plugin>
 
-<!--
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
@@ -120,8 +119,7 @@
                         <version>${postgresql.version}</version>
                     </dependency>
                 </dependencies>
-            </plugin>
--->
+            </plugin>-->
         </plugins>
     </build>
 

@@ -6,9 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: gkislin
@@ -21,7 +24,6 @@ public class JpaUserRepositoryImpl implements UserRepository {
 /*
     @Autowired
     private SessionFactory sessionFactory;
-
     private Session openSession() {
         return sessionFactory.getCurrentSession();
     }
@@ -43,7 +45,12 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-        return em.find(User.class, id);
+        EntityGraph eg = em.getEntityGraph("roles");
+        Map hints = new HashMap();
+        hints.put("javax.persistence.fetchgraph", eg);
+        User user = em.find(User.class, id, hints);
+
+        return user;
     }
 
     @Override
@@ -52,7 +59,6 @@ public class JpaUserRepositoryImpl implements UserRepository {
 
 /*      User ref = em.getReference(User.class, id);
         em.remove(ref);
-
         Query<User> query = em.createQuery("DELETE FROM User u WHERE u.id=:id");
         return query.setParameter("id", id).executeUpdate() != 0;
 */
