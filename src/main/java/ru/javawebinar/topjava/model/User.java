@@ -128,6 +128,18 @@ public class User extends NamedEntity {
         return roles;
     }
 
+    public User addRole(Role role) {
+        if (roles == null) roles = EnumSet.of(role);
+        else roles.add(role);
+        return this;
+    }
+
+    public User addRoles(Set<Role> roles) {
+        if (this.roles == null) this.roles = roles;
+        else this.roles.addAll(roles);
+        return this;
+    }
+
     public String getPassword() {
         return password;
     }

@@ -3,10 +3,7 @@ package ru.javawebinar.topjava.repository.jdbc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.support.DataAccessUtils;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -20,10 +17,7 @@ import javax.sql.DataSource;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -34,8 +28,14 @@ import java.util.stream.Collectors;
 @Repository
 @Transactional(readOnly = true)
 public class JdbcUserRepositoryImpl implements UserRepository {
-
     private static final BeanPropertyRowMapper<User> ROW_MAPPER = BeanPropertyRowMapper.newInstance(User.class);
+    private static final RowMapper<User> ROW_MAPPER_WITH_ROLES = (rs, rowNum) -> {
+        User user = ROW_MAPPER.mapRow(rs, rowNum);
+        String role = rs.getString("role");
+        if (role != null)
+            user.addRole(Role.valueOf(role));
+        return user;
+    };
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -67,14 +67,13 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(map);
             user.setId(newKey.intValue());
-            rolesBatchUpdate(user);
         } else {
             namedParameterJdbcTemplate.update(
                     "UPDATE users SET name=:name, email=:email, password=:password, " +
                             "registered=:registered, enabled=:enabled, calories_per_day=:caloriesPerDay WHERE id=:id", map);
             jdbcTemplate.update("DELETE FROM user_roles WHERE user_id=?", user.getId());
-            rolesBatchUpdate(user);
         }
+        rolesBatchUpdate(user);
         return user;
     }
 
@@ -86,23 +85,20 @@ public class JdbcUserRepositoryImpl implements UserRepository {
 
     @Override
     public User get(int id) {
-        User user = DataAccessUtils.singleResult(jdbcTemplate.query("SELECT * FROM users WHERE id=?", ROW_MAPPER, id));
-        setRoles(user);
-        return user;
+        List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles ON users.id = user_roles.user_id WHERE id=?", ROW_MAPPER_WITH_ROLES, id);
+        return DataAccessUtils.singleResult(getWithRoles(users));
     }
 
     @Override
     public User getByEmail(String email) {
-        User user = DataAccessUtils.singleResult(jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email));
-        setRoles(user);
-        return user;
+        List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles ON users.id = user_roles.user_id WHERE email=?", ROW_MAPPER_WITH_ROLES, email);
+        return DataAccessUtils.singleResult(getWithRoles(users));
     }
 
     @Override
     public List<User> getAll() {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users ORDER BY name, email", ROW_MAPPER);
-        if (!users.isEmpty()) users.forEach(this::setRoles);
-        return users;
+        List<User> users = jdbcTemplate.query("SELECT * FROM users LEFT JOIN user_roles ON users.id = user_roles.user_id ORDER BY name, email", ROW_MAPPER_WITH_ROLES);
+        return getWithRoles(users);
     }
 
     private int[] rolesBatchUpdate(User user) {
@@ -122,10 +118,9 @@ public class JdbcUserRepositoryImpl implements UserRepository {
         });
     }
 
-    private void setRoles(User user) {
-        if (user != null) {
-            List<String> list = namedParameterJdbcTemplate.queryForList("SELECT role FROM user_roles WHERE user_id=:userId", new MapSqlParameterSource("userId", user.getId()), String.class);
-            user.setRoles(list.stream().map(Role::valueOf).collect(Collectors.toSet()));
-        }
+    private List<User> getWithRoles(List<User> users) {
+        Map<Integer, User> groupedUsers = new LinkedHashMap<>();
+        users.stream().forEach(user -> groupedUsers.merge(user.getId(), user, (u1, u2) -> u1.addRoles(u2.getRoles())));
+        return  groupedUsers.values().stream().collect(Collectors.toList());
     }
 }
