@@ -2,7 +2,8 @@
          xsi:noNamespaceSchemaLocation="ehcache.xsd"
          updateCheck="false">
 
-    <diskStore path="java.io.tmpdir"/>
+    <!--<diskStore path="java.io.tmpdir"/>-->
+    <diskStore path="C:\tempdir"/>
 
     <!-- objects are evicted from the cache every 60 seconds -->
     <defaultCache
