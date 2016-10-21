@@ -44,4 +44,3 @@ public class TimeUtil {
         return StringUtils.isEmpty(str) ? LocalDateTime.now() : LocalDateTime.parse(str, formatter);
     }
 }
-}
