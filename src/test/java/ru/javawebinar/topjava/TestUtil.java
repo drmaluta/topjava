@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava;
 
 import org.springframework.test.web.servlet.ResultActions;
+import ru.javawebinar.topjava.matcher.ModelMatcher;
 
 import java.io.UnsupportedEncodingException;
 
@@ -18,4 +19,6 @@ public class TestUtil {
     public static String getContent(ResultActions action) throws UnsupportedEncodingException {
         return action.andReturn().getResponse().getContentAsString();
     }
+
+
 }
