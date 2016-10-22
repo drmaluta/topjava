@@ -22,7 +22,6 @@ public class MealRestController extends AbstractMealController {
     public static final String REST_URL = "/rest/profile/meals";
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public Meal get(@PathVariable("id") int id) {
         return super.get(id);
     }
@@ -33,7 +32,6 @@ public class MealRestController extends AbstractMealController {
     }
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
-    @ResponseBody
     public List<MealWithExceed> getAll() {
         return super.getAll();
     }
@@ -44,7 +42,6 @@ public class MealRestController extends AbstractMealController {
     }
 
     @RequestMapping(value = "/between", method = RequestMethod.GET)
-    @ResponseBody
     public List<MealWithExceed> getBetween(
             @RequestParam(value = "startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
             @RequestParam(value = "endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime) {
@@ -52,9 +49,8 @@ public class MealRestController extends AbstractMealController {
     }
 
     @RequestMapping(value = "/filter", method = RequestMethod.GET)
-    @ResponseBody
     public List<MealWithExceed> getBetween(
-            @RequestParam(value = "startDate", required = false) LocalDate startDate, @RequestParam(value = "startTime", required = false) LocalTime startTime,
+            @RequestParam (value = "startDate", required = false) LocalDate startDate, @RequestParam(value = "startTime", required = false) LocalTime startTime,
             @RequestParam(value = "endDate", required = false) LocalDate endDate, @RequestParam(value = "endTime", required = false) LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
