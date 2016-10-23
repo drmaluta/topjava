@@ -21,41 +21,41 @@ import java.util.List;
 public class MealRestController extends AbstractMealController {
     public static final String REST_URL = "/rest/profile/meals";
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/{id}")
     public Meal get(@PathVariable("id") int id) {
         return super.get(id);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}")
     public void delete(@PathVariable("id") int id) {
         super.delete(id);
     }
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @GetMapping(value = "/")
     public List<MealWithExceed> getAll() {
         return super.getAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void update(@RequestBody Meal meal, @PathVariable("id") int id) {
         super.update(meal, id);
     }
 
-    @RequestMapping(value = "/between", method = RequestMethod.GET)
+    @GetMapping(value = "/between")
     public List<MealWithExceed> getBetween(
             @RequestParam(value = "startDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDateTime,
             @RequestParam(value = "endDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDateTime) {
         return super.getBetween(startDateTime.toLocalDate(), startDateTime.toLocalTime(), endDateTime.toLocalDate(), endDateTime.toLocalTime());
     }
 
-    @RequestMapping(value = "/filter", method = RequestMethod.GET)
+    @GetMapping(value = "/filter")
     public List<MealWithExceed> getBetween(
             @RequestParam (value = "startDate", required = false) LocalDate startDate, @RequestParam(value = "startTime", required = false) LocalTime startTime,
             @RequestParam(value = "endDate", required = false) LocalDate endDate, @RequestParam(value = "endTime", required = false) LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@RequestBody Meal meal) {
         Meal created = super.create(meal);
 
