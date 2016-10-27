@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.repository.JpaUtil;
 import ru.javawebinar.topjava.service.UserService;
 
@@ -42,7 +43,7 @@ abstract public class AbstractControllerTest {
         CHARACTER_ENCODING_FILTER.setForceEncoding(true);
     }
 
-    @Autowired
+    @Autowired(required = false)
     private JpaUtil jpaUtil;
 
     protected MockMvc mockMvc;
@@ -64,6 +65,8 @@ abstract public class AbstractControllerTest {
     @Before
     public void setUp() {
         userService.evictCache();
-        jpaUtil.clear2ndLevelHibernateCache();
+        if (!DB_IMPLEMENTATION.equals(Profiles.JDBC)) {
+            jpaUtil.clear2ndLevelHibernateCache();
+        }
     }
 }
