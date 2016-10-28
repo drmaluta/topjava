@@ -12,19 +12,19 @@
     <form method="post" action="meals/filter">
         <dl>
             <dt><fmt:message key="meals.startDate"/>:</dt>
-            <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
+            <dd><input type="date" name="startDate" value="${startDate}"></dd>
         </dl>
         <dl>
             <dt><fmt:message key="meals.endDate"/>:</dt>
-            <dd><input type="date" name="endDate" value="${param.endDate}"></dd>
+            <dd><input type="date" name="endDate" value="${endDate}"></dd>
         </dl>
         <dl>
             <dt><fmt:message key="meals.startTime"/>:</dt>
-            <dd><input type="time" name="startTime" value="${param.startTime}"></dd>
+            <dd><input type="time" name="startTime" value="${startTime}"></dd>
         </dl>
         <dl>
             <dt><fmt:message key="meals.endTime"/>:</dt>
-            <dd><input type="time" name="endTime" value="${param.endTime}"></dd>
+            <dd><input type="time" name="endTime" value="${endTime}"></dd>
         </dl>
         <button type="submit"><fmt:message key="meals.filter"/></button>
     </form>
