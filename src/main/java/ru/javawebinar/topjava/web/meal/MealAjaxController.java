@@ -23,7 +23,7 @@ public class MealAjaxController extends AbstractMealController{
         return super.getAll();
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Meal get(@PathVariable("id") int id) {
         return super.get(id);
     }
@@ -48,7 +48,7 @@ public class MealAjaxController extends AbstractMealController{
         }
     }
 
-    @GetMapping(value = "/filter")
+    @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealWithExceed> getBetween(
             @RequestParam (value = "startDate", required = false) LocalDate startDate, @RequestParam(value = "startTime", required = false) LocalTime startTime,
             @RequestParam(value = "endDate", required = false) LocalDate endDate, @RequestParam(value = "endTime", required = false) LocalTime endTime) {

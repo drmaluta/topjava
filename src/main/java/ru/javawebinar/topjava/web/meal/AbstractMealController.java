@@ -65,4 +65,5 @@ public abstract class AbstractMealController {
                 ), startTime != null ? startTime : LocalTime.MIN, endTime != null ? endTime : LocalTime.MAX, AuthorizedUser.getCaloriesPerDay()
         );
     }
+
 }

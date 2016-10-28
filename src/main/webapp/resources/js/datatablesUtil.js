@@ -1,10 +1,20 @@
 function makeEditable() {
+
     $('.delete').click(function () {
         deleteRow($(this).attr("id"));
     });
 
+    $('.deleteMeal').click(function () {
+        deleteMealRow($(this).attr("id"));
+    });
+
     $('#detailsForm').submit(function () {
         save();
+        return false;
+    });
+
+    $('#filter').submit(function () {
+        updateTableWithFilter();
         return false;
     });
 
@@ -18,6 +28,17 @@ function add() {
     $('#editRow').modal();
 }
 
+function deleteMealRow(id) {
+    $.ajax({
+        url: ajaxUrl + id,
+        type: 'DELETE',
+        success: function () {
+            updateTableWithFilter();
+            successNoty('Deleted');
+        }
+    });
+}
+
 function deleteRow(id) {
     $.ajax({
         url: ajaxUrl + id,
@@ -25,6 +46,45 @@ function deleteRow(id) {
         success: function () {
             updateTable();
             successNoty('Deleted');
+        }
+    });
+}
+
+function updateTableWithFilter() {
+    /*$.ajax({
+        type: "POST",
+        url: ajaxUrl + 'filter',
+        data: $('#filter').serialize(),
+        success: updateTableByData
+    });
+    return false;*/
+    var startDate = $('#startDate').val();
+    var endDate = $('#endDate').val();
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
+    $.get(ajaxUrl + "filter?startDate="+startDate+"&startTime="+startTime+"&endDate="+endDate+"&endTime="+endTime, function (data) {
+        datatableApi.fnClearTable();
+        $.each(data, function (key, item) {
+            datatableApi.fnAddData(item);
+        });
+        datatableApi.fnDraw();
+        successNoty('Filtered');
+    });
+}
+
+function updateTableByData(data) {
+    datatableApi.clear().rows.add(data).draw();
+}
+
+function enable(chkbox, id) {
+    var enabled = chkbox.is(":checked");
+    chkbox.closest('tr').css("text-decoration", enabled ? "none" : "line-through");
+    $.ajax({
+        url: ajaxUrl + id,
+        type: 'POST',
+        data: 'enabled=' + enabled,
+        success: function () {
+            successNoty(enabled ? 'Enabled' : 'Disabled');
         }
     });
 }
