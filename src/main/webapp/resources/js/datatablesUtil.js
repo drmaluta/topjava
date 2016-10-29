@@ -1,12 +1,12 @@
 function makeEditable() {
 
     $('.delete').click(function () {
-        deleteRow($(this).attr("id"));
+        deleteRow($(this).parents('tr').attr("id"));
     });
 
-    $('.deleteMeal').click(function () {
-        deleteMealRow($(this).attr("id"));
-    });
+    /*$('.deleteMeal').click(function () {
+        deleteMealRow($(this).parents('tr').attr("id"));
+    });*/
 
     $('#detailsForm').submit(function () {
         save();
@@ -14,7 +14,7 @@ function makeEditable() {
     });
 
     $('#filter').submit(function () {
-        updateTableWithFilter();
+        updateTable();
         return false;
     });
 
@@ -28,7 +28,11 @@ function add() {
     $('#editRow').modal();
 }
 
-function deleteMealRow(id) {
+/*function deleteMeal(id) {
+    deleteMealRow(id);
+}*/
+
+/*function deleteMealRow(id) {
     $.ajax({
         url: ajaxUrl + id,
         type: 'DELETE',
@@ -37,7 +41,7 @@ function deleteMealRow(id) {
             successNoty('Deleted');
         }
     });
-}
+}*/
 
 function deleteRow(id) {
     $.ajax({
@@ -50,14 +54,14 @@ function deleteRow(id) {
     });
 }
 
-function updateTableWithFilter() {
-    /*$.ajax({
+/*function updateTableWithFilter() {
+    /!*$.ajax({
         type: "POST",
         url: ajaxUrl + 'filter',
         data: $('#filter').serialize(),
         success: updateTableByData
     });
-    return false;*/
+    return false;*!/
     var startDate = $('#startDate').val();
     var endDate = $('#endDate').val();
     var startTime = $('#startTime').val();
@@ -70,11 +74,11 @@ function updateTableWithFilter() {
         datatableApi.fnDraw();
         successNoty('Filtered');
     });
-}
+}*/
 
-function updateTableByData(data) {
+/*function updateTableByData(data) {
     datatableApi.clear().rows.add(data).draw();
-}
+}*/
 
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
@@ -90,7 +94,12 @@ function enable(chkbox, id) {
 }
 
 function updateTable() {
-    $.get(ajaxUrl, function (data) {
+    var startDate = $('#startDate').val();
+    var endDate = $('#endDate').val();
+    var startTime = $('#startTime').val();
+    var endTime = $('#endTime').val();
+
+    $.get(ajaxUrl, {startDate : startDate, startTime : startTime, endDate : endDate, endTime : endTime}, function (data) {
         datatableApi.fnClearTable();
         $.each(data, function (key, item) {
             datatableApi.fnAddData(item);
