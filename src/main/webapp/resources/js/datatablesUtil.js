@@ -4,19 +4,14 @@ function makeEditable() {
         deleteRow($(this).parents('tr').attr("id"));
     });
 
-    /*$('.deleteMeal').click(function () {
-        deleteMealRow($(this).parents('tr').attr("id"));
-    });*/
+
+    $('#filter').submit(filter);
 
     $('#detailsForm').submit(function () {
         save();
         return false;
     });
 
-    $('#filter').submit(function () {
-        updateTable();
-        return false;
-    });
 
     $(document).ajaxError(function (event, jqXHR, options, jsExc) {
         failNoty(event, jqXHR, options, jsExc);
@@ -28,20 +23,29 @@ function add() {
     $('#editRow').modal();
 }
 
-/*function deleteMeal(id) {
-    deleteMealRow(id);
-}*/
-
-/*function deleteMealRow(id) {
+function filter() {
+    var form = $('#filter');
     $.ajax({
-        url: ajaxUrl + id,
-        type: 'DELETE',
-        success: function () {
-            updateTableWithFilter();
-            successNoty('Deleted');
+        type: "GET",
+        url: ajaxUrl + "filter",
+        data: form.serialize(),
+        success: function (data) {
+            redraw(data);
+            $('.delete').click(function () {
+                deleteRow($(this).closest('tr').attr('id'));
+            });
         }
     });
-}*/
+    return false;
+}
+
+function redraw(data) {
+    datatableApi.clear();
+    $.each(data, function (key, item) {
+        datatableApi.row.add(item);
+    });
+    datatableApi.draw();
+}
 
 function deleteRow(id) {
     $.ajax({
@@ -54,31 +58,7 @@ function deleteRow(id) {
     });
 }
 
-/*function updateTableWithFilter() {
-    /!*$.ajax({
-        type: "POST",
-        url: ajaxUrl + 'filter',
-        data: $('#filter').serialize(),
-        success: updateTableByData
-    });
-    return false;*!/
-    var startDate = $('#startDate').val();
-    var endDate = $('#endDate').val();
-    var startTime = $('#startTime').val();
-    var endTime = $('#endTime').val();
-    $.get(ajaxUrl + "filter?startDate="+startDate+"&startTime="+startTime+"&endDate="+endDate+"&endTime="+endTime, function (data) {
-        datatableApi.fnClearTable();
-        $.each(data, function (key, item) {
-            datatableApi.fnAddData(item);
-        });
-        datatableApi.fnDraw();
-        successNoty('Filtered');
-    });
-}*/
 
-/*function updateTableByData(data) {
-    datatableApi.clear().rows.add(data).draw();
-}*/
 
 function enable(chkbox, id) {
     var enabled = chkbox.is(":checked");
@@ -94,7 +74,16 @@ function enable(chkbox, id) {
 }
 
 function updateTable() {
-    var startDate = $('#startDate').val();
+    var form = $('#filter').val();
+    if (form != undefined) {
+        filter();
+    } else {
+        $.get(ajaxUrl, function (data) {
+            redraw(data);
+        });
+    }
+
+    /*var startDate = $('#startDate').val();
     var endDate = $('#endDate').val();
     var startTime = $('#startTime').val();
     var endTime = $('#endTime').val();
@@ -105,7 +94,7 @@ function updateTable() {
             datatableApi.fnAddData(item);
         });
         datatableApi.fnDraw();
-    });
+    });*/
 }
 
 function save() {

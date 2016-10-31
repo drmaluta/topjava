@@ -13,7 +13,7 @@
             <div class="shadow">
             <h3><fmt:message key="meals.filter"/></h3>
 
-            <form method="post" id="filter">
+            <form method="get" id="filter">
                 <dl>
                     <dt>From Date:</dt>
                     <dd><input type="date" name="startDate" id="startDate" value="${startDate}"></dd>
@@ -30,7 +30,7 @@
                     <dt>To Time:</dt>
                     <dd><input type="time" name="endTime" id="endTime" value="${endTime}"></dd>
                 </dl>
-                <a class="btn btn-primary"><fmt:message key="meals.filter"/></a>
+                <button type="submit" class="btn btn-primary"><fmt:message key="meals.filter"/></button>
             </form>
 
 
@@ -133,31 +133,38 @@
 <script type="text/javascript">
     var ajaxUrl = 'ajax/profile/meals/';
     var datatableApi;
-    // $(document).ready(function () {
     $(function () {
-        datatableApi = $('#datatable').dataTable({
-            "bPaginate": false,
-            "bInfo": false,
-            "aoColumns": [
+        datatableApi = $('#datatable').DataTable({
+            "paging": false,
+            "info": false,
+            "createdRow": function ( row, data, dataIndex ) {
+                $(row).addClass(data.exceed? "exceeded" : "normal");
+                $(row).attr('id', data.id);
+            },
+            "columns": [
                 {
-                    "mData": "dateTime"
+                    "data": "dateTime"
                 },
                 {
-                    "mData": "description"
+                    "data": "description"
                 },
                 {
-                    "mData": "calories"
+                    "data": "calories"
                 },
                 {
-                    "sDefaultContent": "Update",
-                    "bSortable": false
+                    "defaultContent": '<td><a class="btn btn-primary btn-xs edit"><fmt:message
+                                        key="common.update"/></a></td>',
+                    "orderable": false
                 },
                 {
-                    "sDefaultContent": "Delete",
-                    "bSortable": false
+                    "orderable": false,
+                    "render":function () {
+                        return '<td><button class="btn btn-danger btn-xs delete"><fmt:message
+                                        key="common.delete"/></button></td>'
+                    }
                 }
             ],
-            "aaSorting": [
+            "order": [
                 [
                     0,
                     "asc"
