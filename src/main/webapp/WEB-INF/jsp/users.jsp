@@ -111,6 +111,11 @@
         datatableApi = $('#datatable').DataTable({
             "paging": false,
             "info": false,
+            "createdRow": function (row, data, dataIndex) {
+                if (!data.enabled) {
+                    $(row).css("text-decoration", "line-through");
+                }
+            },
             "columns": [
                 {
                     "data": "name"
@@ -128,11 +133,13 @@
                     "data": "registered"
                 },
                 {
-                    "defaultContent": "",
+                    "defaultContent": '<td><a class="btn btn-primary btn-xs edit"><fmt:message
+                                        key="common.update"/></a></td>',
                     "orderable": false
                 },
                 {
-                    "defaultContent": "",
+                    "defaultContent": '<td><button class="btn btn-danger btn-xs delete"><fmt:message
+                                        key="common.delete"/></button></td>',
                     "orderable": false
                 }
             ],
