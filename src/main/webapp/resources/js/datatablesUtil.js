@@ -40,11 +40,11 @@ function filter() {
 }
 
 function redraw(data) {
-    datatableApi.clear();
-    $.each(data, function (key, item) {
+    datatableApi.clear().rows.add(data).draw();
+    /*$.each(data, function (key, item) {
         datatableApi.row.add(item);
     });
-    datatableApi.draw();
+    datatableApi.draw();*/
 }
 
 function deleteRow(id) {

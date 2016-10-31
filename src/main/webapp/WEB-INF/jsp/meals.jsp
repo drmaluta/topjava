@@ -142,8 +142,7 @@
                     "data": "dateTime",
                     "render": function (date, type) {
                         if (type == 'display') {
-                            var dateObject = new Date(date);
-                            return '<td>' + dateObject.toISOString().substring(0, 19).replace("T"," ") + '</td>';
+                            return date.replace('T', ' ').substr(0, 16);
                         }
                         return date;
                     }
