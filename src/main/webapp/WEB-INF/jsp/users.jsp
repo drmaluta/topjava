@@ -63,7 +63,7 @@
                     <input type="text" hidden="hidden" id="id" name="id">
 
                     <div class="form-group">
-                        <label for="name" class="control-label col-xs-3">Name</label>
+                        <label for="name" class="control-label col-xs-3"><fmt:message key="users.name"/></label>
 
                         <div class="col-xs-9">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Name">
@@ -71,7 +71,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="email" class="control-label col-xs-3">Email</label>
+                        <label for="email" class="control-label col-xs-3"><fmt:message key="users.email"/></label>
 
                         <div class="col-xs-9">
                             <input type="email" class="form-control" id="email" name="email" placeholder="email">
@@ -79,7 +79,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="control-label col-xs-3">Password</label>
+                        <label for="password" class="control-label col-xs-3"><fmt:message key="users.password"/></label>
 
                         <div class="col-xs-9">
                             <input type="password" class="form-control" id="password" name="password" placeholder="">
@@ -88,7 +88,7 @@
 
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary"><fmt:message key="common.save"/></button>
                         </div>
                     </div>
                 </form>
