@@ -15,8 +15,7 @@
                 <h3><fmt:message key="meals.title"/></h3>
                 <form method="get" class="form-horizontal" id="filter">
                     <div class="form-group col-xs-12">
-                        <label for="startDate" class="control-label col-xs-2"><fmt:message
-                                key="meals.startDate"/>:</label>
+                        <label for="startDate" class="control-label col-xs-2"><fmt:message key="meals.startDate"/>:</label>
                         <div class="col-xs-2">
                             <input type="date" name="startDate" class="form-control" id="startDate" value="${startDate}">
                         </div>
@@ -87,26 +86,21 @@
                     <div class="form-group">
                         <label for="dateTime" class="control-label col-xs-4"><fmt:message key="meals.dateTime"/></label>
                         <div class="col-xs-6">
-                            <input type="datetime-local" class="form-control" name="dateTime" placeholder="DateTime"
-                                   id="dateTime">
+                            <input type="datetime-local" class="form-control" name="dateTime" placeholder="DateTime" id="dateTime">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="description" class="control-label col-xs-4"><fmt:message
-                                key="meals.description"/></label>
+                        <label for="description" class="control-label col-xs-4"><fmt:message key="meals.description"/></label>
                         <div class="col-xs-6">
-                            <input type="text" name="description" class="form-control" placeholder="Description"
-                                   id="description">
+                            <input type="text" name="description" class="form-control" placeholder="Description" id="description">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label for="calories" class="control-label col-xs-4"><fmt:message
-                                key="meals.calories"/></label>
+                        <label for="calories" class="control-label col-xs-4"><fmt:message key="meals.calories"/></label>
                         <div class="col-xs-6">
-                            <input type="number" name="calories" class="form-control" placeholder="Calories"
-                                   id="calories">
+                            <input type="number" name="calories" class="form-control" placeholder="Calories" id="calories">
                         </div>
                     </div>
 
