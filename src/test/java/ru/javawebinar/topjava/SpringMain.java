@@ -2,7 +2,8 @@ package ru.javawebinar.topjava;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.to.MealWithExceed;
-import ru.javawebinar.topjava.web.meal.JspMealController;
+//import ru.javawebinar.topjava.web.meal.JspMealController;
+import ru.javawebinar.topjava.web.meal.MealAjaxController;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
@@ -29,7 +30,7 @@ public class SpringMain {
             adminUserController.get(UserTestData.USER.getId());
             System.out.println();
 
-            JspMealController mealController = appCtx.getBean(JspMealController.class);
+            MealAjaxController mealController = appCtx.getBean(MealAjaxController.class);
             List<MealWithExceed> filteredMealsWithExceeded =
                     mealController.getBetween(
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
