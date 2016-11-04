@@ -30,7 +30,7 @@ public class SpringMain {
             adminUserController.get(UserTestData.USER.getId());
             System.out.println();
 
-            MealAjaxController mealController = appCtx.getBean(MealAjaxController.class);
+            MealRestController mealController = appCtx.getBean(MealRestController.class);
             List<MealWithExceed> filteredMealsWithExceeded =
                     mealController.getBetween(
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
