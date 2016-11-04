@@ -57,10 +57,10 @@ $(function () {
             $(row).addClass(data.exceed ? 'exceeded' : 'normal');
         },
         "initComplete": function () {
-            $('#filter').submit(function () {
+            /*$('#filter').submit(function () {
                 updateTable();
                 return false;
-            });
+            });*/
 
             var startDate = $('#startDate');
             var endDate = $('#endDate');
