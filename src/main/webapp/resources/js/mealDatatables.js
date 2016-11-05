@@ -62,6 +62,12 @@ $(function () {
                 return false;
             });*/
 
+            $("#reset").click(function () {
+                $('#filter').find('input').val(null);
+                updateTable();
+                return false;
+            })
+
             var startDate = $('#startDate');
             var endDate = $('#endDate');
 

@@ -45,8 +45,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-8">
-                            <button class="btn btn-primary pull-right"  type="button" onclick="updateTable()"><fmt:message key="meals.filter"/></button>
+                        <div class="col-sm-8" align="right">
+                            <button class="btn btn-primary"  type="button" onclick="updateTable()"><fmt:message key="meals.filter"/></button>
+                            <button id="reset" class="btn btn-warning" data-target="#filter">
+                                <fmt:message key="common.cancel"/>
+                            </button>
                         </div>
                     </div>
                 </form>
