@@ -15,7 +15,7 @@
             <h3><fmt:message key="users.title"/></h3>
 
             <div class="view-box">
-                <a class="btn btn-sm btn-info" onclick="add('<fmt:message key="users.add"/>')"><fmt:message key="users.add"/></a>
+                <a class="btn btn-sm btn-info" onclick="add('<fmt:message key="users.add"/>')"><img src="resources/images/add-user-512.png" width="20" />  <fmt:message key="users.add"/></a>
 
                 <table class="table table-striped display" id="datatable">
                     <thead>

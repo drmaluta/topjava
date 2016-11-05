@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </form>
-                <a class="btn btn-sm btn-info" onclick="add('<fmt:message key="meals.add"/>')"><fmt:message key="meals.add"/></a>
+                <a class="btn btn-sm btn-info" onclick="add('<fmt:message key="meals.add"/>')"><img src="resources/images/icon-meal-2.png" width="23" />  <fmt:message key="meals.add"/></a>
                 <table class="table table-striped display" id="datatable">
                     <thead>
                     <tr>
