@@ -2,10 +2,11 @@ package ru.javawebinar.topjava;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
 import ru.javawebinar.topjava.to.MealWithExceed;
-//import ru.javawebinar.topjava.web.meal.JspMealController;
-import ru.javawebinar.topjava.web.meal.MealAjaxController;
+
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
+import static ru.javawebinar.topjava.TestUtil.mockAuthorize;
+import static ru.javawebinar.topjava.UserTestData.USER;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,12 +26,14 @@ public class SpringMain {
             appCtx.load("spring/spring-app.xml", "spring/spring-mvc.xml", "spring/spring-db.xml");
             appCtx.refresh();
 
+            mockAuthorize(USER);
+
             System.out.println("Bean definition names: " + Arrays.toString(appCtx.getBeanDefinitionNames()));
             AdminRestController adminUserController = appCtx.getBean(AdminRestController.class);
             adminUserController.get(UserTestData.USER.getId());
             System.out.println();
 
-            MealAjaxController mealController = appCtx.getBean(MealAjaxController.class);
+            MealRestController mealController = appCtx.getBean(MealRestController.class);
             List<MealWithExceed> filteredMealsWithExceeded =
                     mealController.getBetween(
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
