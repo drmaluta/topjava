@@ -26,7 +26,7 @@ public class TestUtil {
 
     public static void authorize(User user) {
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
+                new UsernamePasswordAuthenticationToken(new AuthorizedUser(user), user.getPassword()));
     }
 
     public static RequestPostProcessor userHttpBasic(User user) {
