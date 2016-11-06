@@ -1,9 +1,8 @@
 package ru.javawebinar.topjava;
 
 import org.springframework.context.support.GenericXmlApplicationContext;
+import org.springframework.security.access.annotation.Secured;
 import ru.javawebinar.topjava.to.MealWithExceed;
-//import ru.javawebinar.topjava.web.meal.JspMealController;
-import ru.javawebinar.topjava.web.meal.MealAjaxController;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
